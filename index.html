@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grain Cart Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Grain Cart Calculator">
+<meta name="theme-color" content="#2f7d32">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{--bg:#f4f1e8;--card:#fff;--tx:#1d2a1d;--mu:#6b7565;--ac:#2f7d32;--ac2:#e8f3e8;--bd:#d9d5c6;--rd:#c62828;--hlt:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121712;--card:#1c241c;--tx:#eaf0ea;--mu:#93a08f;--ac:#66bb6a;--ac2:#243324;--bd:#2f3b2f;--rd:#ef5350;--hlt:#0d1a0d}}
+:root[data-theme="dark"]{--bg:#121712;--card:#1c241c;--tx:#eaf0ea;--mu:#93a08f;--ac:#66bb6a;--ac2:#243324;--bd:#2f3b2f;--rd:#ef5350;--hlt:#0d1a0d}
+:root[data-pal="deere"]{--bg:#f1f3e6;--card:#fff;--tx:#1b2a1b;--mu:#66735f;--ac:#367c2b;--ac2:#fff1a6;--bd:#d4d8c0;--hlt:#fff}
+@media(prefers-color-scheme:dark){:root[data-pal="deere"]:not([data-theme="light"]){--bg:#101a10;--card:#182618;--tx:#eef3e6;--mu:#9bab94;--ac:#ffde00;--ac2:#2b3a17;--bd:#2c3d2c;--hlt:#1a1500}}
+:root[data-pal="deere"][data-theme="dark"]{--bg:#101a10;--card:#182618;--tx:#eef3e6;--mu:#9bab94;--ac:#ffde00;--ac2:#2b3a17;--bd:#2c3d2c;--hlt:#1a1500}
+:root[data-pal="blue"]{--bg:#eef3f8;--card:#fff;--tx:#14212e;--mu:#5d6b7a;--ac:#1565c0;--ac2:#e3eefb;--bd:#d0dae5;--hlt:#fff}
+@media(prefers-color-scheme:dark){:root[data-pal="blue"]:not([data-theme="light"]){--bg:#0f1620;--card:#182230;--tx:#e8eff7;--mu:#8fa0b3;--ac:#64b5f6;--ac2:#1c2d42;--bd:#2a3a4e;--hlt:#08182a}}
+:root[data-pal="blue"][data-theme="dark"]{--bg:#0f1620;--card:#182230;--tx:#e8eff7;--mu:#8fa0b3;--ac:#64b5f6;--ac2:#1c2d42;--bd:#2a3a4e;--hlt:#08182a}
+:root[data-pal="orange"]{--bg:#f7f2ec;--card:#fff;--tx:#2a1f16;--mu:#7b6a5a;--ac:#e65100;--ac2:#fdebd9;--bd:#e0d3c4;--hlt:#fff}
+@media(prefers-color-scheme:dark){:root[data-pal="orange"]:not([data-theme="light"]){--bg:#17120d;--card:#221a12;--tx:#f5ece2;--mu:#ab9a88;--ac:#ffa040;--ac2:#3a2816;--bd:#3a2e22;--hlt:#1f1000}}
+:root[data-pal="orange"][data-theme="dark"]{--bg:#17120d;--card:#221a12;--tx:#f5ece2;--mu:#ab9a88;--ac:#ffa040;--ac2:#3a2816;--bd:#3a2e22;--hlt:#1f1000}
+:root[data-pal="bky"]{--bg:#f2f2f2;--card:#fff;--tx:#111;--mu:#666;--ac:#ffc400;--ac2:#fff4c2;--bd:#d6d6d6;--hlt:#111}
+@media(prefers-color-scheme:dark){:root[data-pal="bky"]:not([data-theme="light"]){--bg:#0b0b0b;--card:#171717;--tx:#f5f5f5;--mu:#a0a0a0;--ac:#ffd600;--ac2:#2a2500;--bd:#333;--hlt:#111}}
+:root[data-pal="bky"][data-theme="dark"]{--bg:#0b0b0b;--card:#171717;--tx:#f5f5f5;--mu:#a0a0a0;--ac:#ffd600;--ac2:#2a2500;--bd:#333;--hlt:#111}
+:root[data-pal="steel"]{--bg:#eceff1;--card:#fff;--tx:#1c2429;--mu:#5b6b73;--ac:#455a64;--ac2:#e1e7ea;--bd:#cfd8dc;--hlt:#fff}
+@media(prefers-color-scheme:dark){:root[data-pal="steel"]:not([data-theme="light"]){--bg:#12171a;--card:#1b2226;--tx:#e6ecef;--mu:#8fa1a9;--ac:#90a4ae;--ac2:#243036;--bd:#2e3b41;--hlt:#0f171b}}
+:root[data-pal="steel"][data-theme="dark"]{--bg:#12171a;--card:#1b2226;--tx:#e6ecef;--mu:#8fa1a9;--ac:#90a4ae;--ac2:#243036;--bd:#2e3b41;--hlt:#0f171b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,system-ui,Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:12px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.tab{flex:none;padding:10px 16px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:16px}
+.tab.on{background:var(--ac);color:var(--hlt);border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-top:10px}
+.big{display:flex;gap:10px}
+.big div{flex:1;background:var(--ac2);border-radius:12px;padding:10px;text-align:center}
+.big small{display:block;color:var(--mu);font-size:13px}
+.big b{font-size:26px}
+.big .left{background:var(--ac);color:var(--hlt);flex:1.25;box-shadow:0 0 0 2px var(--ac)}
+.big .left small,.big .left b{color:var(--hlt)}
+.big .left b{font-size:32px}
+.big .left.neg{background:var(--rd);box-shadow:0 0 0 2px var(--rd)}
+.big .left.neg small,.big .left.neg b{color:#fff}
+label{font-size:13px;color:var(--mu);display:block;margin-bottom:4px}
+input,textarea,select{width:100%;font-size:18px;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+.row{display:flex;gap:8px;align-items:flex-end}
+button:disabled{opacity:.4}
+button{font-size:17px;border-radius:10px;border:0;padding:12px 16px;cursor:pointer}
+.pri{background:var(--ac);color:var(--hlt);font-weight:600}
+.ghost{background:transparent;border:1px solid var(--bd);color:var(--tx)}
+.ghost.dk{background:var(--mu);border-color:var(--mu);color:var(--hlt);font-weight:600}
+.danger{background:transparent;border:1px solid var(--rd);color:var(--rd)}
+.load{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd);font-size:18px}
+.load:last-child{border:0}
+.load span{color:var(--mu);font-size:14px;margin-right:8px}
+.x{background:none;color:var(--rd);font-size:22px;padding:4px 10px}
+h3{margin:0 0 8px;font-size:15px;color:var(--mu);font-weight:600}
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.bgrp{border:2px solid var(--mu);border-radius:4px;padding:8px;margin-top:8px}.bins{display:grid;grid-template-columns:1fr 1fr;gap:8px}.bin{border:1px solid var(--bd);border-radius:12px;padding:10px;text-align:center}.bin small{display:block;color:var(--mu);font-size:13px}.bin b{font-size:22px}.bin.cur{border:2px solid var(--ac);background:var(--ac2)}.bin.full b{color:var(--mu)}
+.rt{display:grid;grid-template-columns:1fr auto auto auto;gap:8px 12px;margin-top:12px;font-size:16px}.rt .h{font-size:13px;color:var(--mu)}.rt .r{text-align:right}.rt .t{font-weight:600;border-top:1px solid var(--bd);padding-top:8px}
+.foot{display:flex;gap:8px;margin-top:14px}.foot button{flex:1}
+</style>
+</head>
+<body>
+<main>
+<div class="tabs" id="tabs"></div>
+<div id="view"></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+window.claude=window.claude||{};
+if(!window.claude.use)window.claude.use=function(){return Promise.resolve({save:function(o){return new Promise(function(res,rej){try{var t=/\.xlsx$/.test(o.filename)?'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':/\.json$/.test(o.filename)?'application/json':'text/csv';var b=new Blob([o.data],{type:t});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download=o.filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500);res()}catch(e){rej(e)}})}})};
+</script>
+<script>
+var KEY='graincart.v1',S;
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!S.trucks)S={cur:0,trucks:[{name:'Truck 1',net:0,loads:[],notes:'',bl:[],lt:[],hist:[],field:'',crop:''}]};
+fixData()}
+function fixData(){S.trucks.forEach(function(t){if(!t.bl){t.bl=[];for(var i=0;i<(t.bins||0);i++)t.bl.push(t.bsize||0)}
+t.hist=t.hist||[];if(t.field===undefined)t.field='';if(t.crop===undefined)t.crop='';
+if(!t.lt||t.lt.length!=t.loads.length)t.lt=t.loads.map(function(){return null})});
+if(!S.fields){S.fields=fieldList()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function fmt(n){return Math.round(n).toLocaleString()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function T(){return S.trucks[S.cur]}
+function sumHTML(t){var sum=t.loads.reduce(function(a,b){return a+b},0),left=t.net-sum;
+var h='<div class="card"><div class="big"><div><small>Total Pounds Loaded</small><b>'+fmt(sum)+'</b></div><div class="left'+(left<0?' neg':'')+'"><small>'+(left<0?'Over By':'Pounds Needed to Complete Load')+'</small><b>'+fmt(Math.abs(left))+'</b></div></div></div>';
+var bl=t.bl||[],tot=bl.reduce(function(x,y){return x+y},0);
+if(bl.length&&tot>0){h+='<div class="card"><h3>Pounds to Fill Per Hopper</h3>';var cur=-1,st=0;
+for(var i=0;i<bl.length;i++){var f=Math.min(bl[i],Math.max(0,sum-st)),r=bl[i]-f;st+=bl[i];if(r>0&&cur<0)cur=i;
+if(i%2==0)h+='<div class="bgrp"><div class="bins">';
+h+='<div class="bin'+(r==0?' full':(cur==i?' cur':''))+'"><small>'+bname(i)+'</small><b>'+(r==0?'Full':fmt(r))+'</b></div>';
+if(i%2==1||i==bl.length-1)h+='</div></div>'}
+h+='</div>'}
+return h}
+function bname(i){return ['Front Hopper','Back Hopper','Rear Trailer Front Hopper','Rear Trailer Rear Hopper'][i]||'Compartment '+(i+1)}
+function binInputs(t){return (t.bl||[]).map(function(v,i){return '<div><label>'+bname(i)+' (lbs)</label><input class="bsz" data-b="'+i+'" type="text" inputmode="numeric" value="'+(v?fmt(v):'')+'" placeholder="0"></div>'}).join('')}
+function recalc(t){var tot=(t.bl||[]).reduce(function(x,y){return x+y},0),ne=document.getElementById('net');if(tot>0){t.net=tot;ne.value=fmt(tot)}ne.readOnly=tot>0;save();upd()}
+function z(n){return n<10?'0'+n:n}
+function dstr(d){return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())}
+function add(a,b){return a+b}
+function fieldList(){var o={};S.trucks.forEach(function(t){if(t.field)o[t.field]=1;(t.hist||[]).forEach(function(x){if(x.field)o[x.field]=1})});return Object.keys(o).sort()}
+function bnum(l,c){return c=='Corn'?l/56:c=='Soybeans'?l/60:0}
+function bu(l,c){var v=bnum(l,c);return v?Math.round(v*100)/100:''}
+function trips(t){var a=(t.hist||[]).slice();if(t.loads.length)a.push({loads:t.loads,lt:t.lt||[],net:t.net,bl:t.bl||[],field:t.field||'',crop:t.crop||''});return a}
+function newLoad(t){t.hist=t.hist||[];if(t.loads.length)t.hist.push({loads:t.loads,lt:t.lt||[],net:t.net,bl:(t.bl||[]).slice(),field:t.field||'',crop:t.crop||''});t.loads=[];t.lt=[]}
+function doExport(){
+var btn=document.getElementById('exp');
+function note(t){btn.textContent=t;setTimeout(function(){btn.textContent='Export to Excel'},2500)}
+if(!window.claude||!claude.use){note('Export not available here');return}
+claude.use('downloads').then(function(dl){
+if(!dl){note('Export not available here');return}
+var sm=[['Truck','Truck Loads','Cart Loads','Total Pounds Loaded','Total Bushels','Current Net Weight (lbs)','Current Pounds Needed to Complete Load','Notes','Current Field','Current Crop']],lo=[['Date','Time','Field','Crop','Truck','Truck Load #','Cart Load #','Pounds','Bushels','Running Total (lbs)','Hopper Fill']],hp=[['Field','Crop','Truck','Truck Load #','Hopper','Capacity (lbs)','Pounds Filled','Pounds to Fill']];
+S.trucks.forEach(function(t){var tr=trips(t),cl=0,tp=0,tb=0;
+tr.forEach(function(x,k){var bl=x.bl||[],tot=x.loads.reduce(add,0),cs=0;cl+=x.loads.length;tp+=tot;tb+=bnum(tot,x.crop);
+x.loads.forEach(function(l,i){var ce=cs+l,tm=x.lt&&x.lt[i]?new Date(x.lt[i]):null,parts=[],s2=0;
+bl.forEach(function(c,j){var ov=Math.min(ce,s2+c)-Math.max(cs,s2);if(ov>0)parts.push(bname(j)+': '+fmt(ov));s2+=c});
+if(bl.length&&ce>s2)parts.push('Over Capacity: '+fmt(ce-Math.max(cs,s2)));
+lo.push([tm?dstr(tm):'',tm?tm.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'',x.field||'',x.crop||'',t.name,k+1,i+1,l,bu(l,x.crop),ce,parts.join(', ')]);cs=ce});
+var st=0;bl.forEach(function(c,j){var f=Math.min(c,Math.max(0,tot-st));st+=c;hp.push([x.field||'',x.crop||'',t.name,k+1,bname(j),c,f,c-f])})});
+sm.push([t.name,tr.length,cl,tp,Math.round(tb*100)/100,t.net,t.net-t.loads.reduce(add,0),t.notes,t.field||'',t.crop||''])});
+sm.push(['All Trucks'].concat([1,2,3,4].map(function(c){return Math.round(sm.slice(1).reduce(function(a,r){return a+r[c]},0)*100)/100})).concat(['','','','','']));
+var stamp=dstr(new Date()),data,name;
+if(window.XLSX){var wb=XLSX.utils.book_new();
+[['Loads',lo],['Summary',sm],['Hoppers',hp]].forEach(function(x){var ws=XLSX.utils.aoa_to_sheet(x[1]);
+ws['!cols']=x[1][0].map(function(_,c){return{wch:Math.min(40,Math.max.apply(null,x[1].map(function(r){return String(r[c]==null?'':r[c]).length}))+2)}});
+XLSX.utils.book_append_sheet(wb,ws,x[0])});
+data=XLSX.write(wb,{bookType:'xlsx',type:'array'});name='grain-cart-'+stamp+'.xlsx'}
+else{data=lo.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');name='grain-cart-loads-'+stamp+'.csv'}
+return dl.save({filename:name,data:data}).then(function(){note('Saved')})
+}).catch(function(e){note(e&&e.code=='declined'?'Canceled':'Export failed')})
+}
+function repHTML(){var o=S.repOpen,h='<div class="card"><button class="ghost" id="reptog" style="width:100%;display:flex;justify-content:space-between"><span>Reporting</span><span>'+(o?'▲':'▼')+'</span></button>';
+if(o){var a=0,c=0,p=0;h+='<div class="rt"><div class="h">Truck</div><div class="h r">Truck Loads</div><div class="h r">Cart Loads</div><div class="h r">Pounds</div>';
+S.trucks.forEach(function(t){var tr=trips(t),cl=0,w=0;tr.forEach(function(x){cl+=x.loads.length;w+=x.loads.reduce(add,0)});a+=tr.length;c+=cl;p+=w;h+='<div>'+esc(t.name)+'</div><div class="r">'+tr.length+'</div><div class="r">'+cl+'</div><div class="r">'+fmt(w)+'</div>'});
+h+='<div class="t">All Trucks</div><div class="t r">'+a+'</div><div class="t r">'+c+'</div><div class="t r">'+fmt(p)+'</div></div>';
+var fm={},fo=[];S.trucks.forEach(function(t){trips(t).forEach(function(x){var k=x.field||'No Field';if(!fm[k]){fm[k]={tl:0,cl:0,w:0};fo.push(k)}fm[k].tl++;fm[k].cl+=x.loads.length;fm[k].w+=x.loads.reduce(add,0)})});
+fo.sort(function(m,n){return m=='No Field'?1:n=='No Field'?-1:m.localeCompare(n)});
+if(fo.length){h+='<h3 style="margin-top:16px">By Field</h3><div class="rt"><div class="h">Field</div><div class="h r">Truck Loads</div><div class="h r">Cart Loads</div><div class="h r">Pounds</div>';
+fo.forEach(function(k){h+='<div>'+esc(k)+'</div><div class="r">'+fm[k].tl+'</div><div class="r">'+fm[k].cl+'</div><div class="r">'+fmt(fm[k].w)+'</div>'});h+='</div>'}}
+return h+'</div>'}
+function upd(){document.getElementById('sum').innerHTML=sumHTML(T())}
+var armed={};
+function resetBtns(){var c=document.getElementById('clr'),d=document.getElementById('del');var r=document.getElementById('clrrep');if(c)c.textContent='Start New Load';if(d)d.textContent='Delete Truck';if(r)r.textContent='Clear All Trucks (Keep Report Data)';[c,d,r].forEach(function(x){if(!x)return;x.style.background='';x.style.color='';x.style.borderColor=''})}
+function disarm(){for(var k in armed)clearTimeout(armed[k]);armed={};resetBtns()}
+var seasonAsk=false,fbMsg='',PALS=[['green','Green (Default)'],['deere','Deere Green &amp; Yellow'],['blue','Blue'],['orange','Orange'],['bky','Black &amp; Yellow'],['steel','Steel Gray']];
+var importPending=null,importMsg='';
+function impSummary(d){var tr=d.trucks.length,cl=0;d.trucks.forEach(function(t){cl+=t.loads.length;(t.hist||[]).forEach(function(h){cl+=h.loads.length})});return tr+' truck'+(tr==1?'':'s')+', '+cl+' cart loads'}
+function doBackup(){var btn=document.getElementById('bkp');var L='Export Data (Backup File)';function note(t){btn.textContent=t;setTimeout(function(){btn.textContent=L},2500)}
+if(!window.claude||!claude.use){note('Not available here');return}
+claude.use('downloads').then(function(dl){if(!dl){note('Not available here');return}
+var out={app:'graincart',version:1,exported:new Date().toISOString(),data:{cur:S.cur,fields:S.fields||[],trucks:S.trucks}};
+return dl.save({filename:'grain-cart-data-'+dstr(new Date())+'.json',data:JSON.stringify(out)}).then(function(){note('Saved')})}).catch(function(e){note(e&&e.code=='declined'?'Canceled':'Export failed')})}
+var hostTheme=document.documentElement.getAttribute('data-theme');
+function applyTheme(){var d=document.documentElement;d.setAttribute('data-pal',S.theme||'green');var m=S.mode||'auto';if(m=='auto'){if(hostTheme)d.setAttribute('data-theme',hostTheme);else d.removeAttribute('data-theme')}else d.setAttribute('data-theme',m)}
+function arm(id,fn){var b=document.getElementById(id);if(armed[id]){disarm();fn();return}disarm();b.textContent='Tap Again to Confirm';b.style.background='var(--rd)';b.style.color='#fff';b.style.borderColor='var(--rd)';armed[id]=setTimeout(disarm,4000)}
+function render(keepFocus){applyTheme();disarm();
+var tb='';S.trucks.forEach(function(t,i){tb+='<button class="tab'+(i==S.cur?' on':'')+'" data-i="'+i+'">'+esc(t.name)+'</button>'});
+document.getElementById('tabs').innerHTML=tb;
+var t=T();
+var h='<div id="sum">'+sumHTML(t)+'</div>'+
+'<div class="card"><label>Cart Load (lbs)</label><div class="row"><input id="lb" type="text" inputmode="numeric" placeholder="e.g. 32000"><button class="pri" id="addl">Add Load</button></div></div>'+
+'<div class="card"><h3>Notes For '+esc(t.name)+'</h3><textarea id="nt" placeholder="Notes stay with this truck">'+esc(t.notes)+'</textarea></div>'+
+'<button class="ghost dk" id="clr" style="width:100%;margin-top:10px">Start New Load</button>'+
+'<div class="card"><label>Field Name</label>'+(S.addingField?'<div class="row"><input id="fnew" placeholder="New field name" autocomplete="off"><button class="pri" id="fldadd">Add</button><button class="ghost" id="fldcancel">Cancel</button></div>':'<select id="fld"><option value="">— Select Field —</option>'+(S.fields||[]).map(function(f){return '<option value="'+esc(f)+'"'+(f==t.field?' selected':'')+'>'+esc(f)+'</option>'}).join('')+'<option value="__new">+ Add New Field…</option></select>')+'</div>'+
+'<div class="card"><label>Crop</label><select id="crp"><option value="">— Select Crop —</option>'+['Corn','Soybeans'].map(function(c){return '<option value="'+c+'"'+(c==t.crop?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div>';
+h+='<div class="card"><button class="ghost" id="setuptog" style="width:100%;display:flex;justify-content:space-between"><span>Setup</span><span>'+(S.setupOpen?'▲':'▼')+'</span></button>'+(S.setupOpen?'<div style="margin-top:12px"><label>Theme</label><select id="thm">'+PALS.map(function(p){return '<option value="'+p[0]+'"'+((S.theme||'green')==p[0]?' selected':'')+'>'+p[1]+'</option>'}).join('')+'</select><label style="margin-top:10px">Light / Dark Mode</label><select id="mode">'+[['auto','Automatic (Phone Setting)'],['light','Light'],['dark','Dark']].map(function(p){return '<option value="'+p[0]+'"'+((S.mode||'auto')==p[0]?' selected':'')+'>'+p[1]+'</option>'}).join('')+'</select><div class="row" style="margin-top:10px"><div style="flex:1"><label>Truck Name</label><input id="nm" value="'+esc(t.name)+'"></div>'+
+'<div style="flex:1"><label>Net Weight to Load (lbs)</label><input id="net" type="text" inputmode="numeric" value="'+(t.net?fmt(t.net):'')+'" placeholder="0"'+((t.bl||[]).reduce(function(x,y){return x+y},0)>0?' readonly':'')+'></div></div>'+
+'<div style="margin-top:10px"><label>Total Number of Hoppers</label><input id="bn" type="text" inputmode="numeric" value="'+((t.bl||[]).length||'')+'" placeholder="none"></div>'+
+'<div id="bsz" class="bg" style="margin-top:10px">'+binInputs(t)+'</div><div style="margin-top:14px"><label>Field Names</label>'+((S.fields||[]).length?(S.fields||[]).map(function(f,i){return '<div class="row" style="margin-top:6px;align-items:center"><div style="flex:1">'+esc(f)+'</div><button class="ghost" data-rf="'+i+'">Remove</button></div>'}).join(''):'<div style="color:var(--mu);font-size:14px">None yet. Use the Field Name list to add one.</div>')+'<textarea id="fbulk" style="min-height:70px;margin-top:10px" placeholder="Paste field names here, one per line"></textarea><button class="pri" id="fbulkadd" style="width:100%;margin-top:8px">Add Pasted Fields</button>'+(fbMsg?'<div style="color:var(--mu);font-size:14px;margin-top:6px">'+esc(fbMsg)+'</div>':'')+'</div><button class="pri" id="add" style="width:100%;margin-top:14px">+ Add Truck</button><button class="pri" id="exp" style="width:100%;margin-top:10px">Export to Excel</button><button class="ghost" id="bkp" style="width:100%;margin-top:10px">Export Data (Backup File)</button><button class="ghost" id="impbtn" style="width:100%;margin-top:10px">Import Data From Backup File</button><input type="file" id="impf" accept=".json,application/json,text/plain" style="display:none">'+(importMsg?'<div style="color:var(--mu);font-size:14px;margin-top:6px">'+esc(importMsg)+'</div>':'')+(importPending?'<div style="margin-top:10px;padding:12px;border:1px solid var(--rd);border-radius:10px"><div>Backup found: '+impSummary(importPending)+'. Importing replaces all trucks, loads, reports and field names on this device.</div><div class="row" style="margin-top:10px"><button class="danger" id="impgo" style="flex:1">Replace Data on This Device</button><button class="ghost" id="impcancel">Cancel</button></div></div>':'')+'<button class="danger" id="clrrep" style="width:100%;margin-top:10px">Clear All Trucks (Keep Report Data)</button>'+(seasonAsk?'<div style="margin-top:10px;padding:12px;border:1px solid var(--rd);border-radius:10px"><label>Type DELETE to erase all report data for a new season</label><input id="sdel" autocomplete="off" autocapitalize="characters" placeholder="DELETE"><div class="row" style="margin-top:10px"><button class="danger" id="sgo" style="flex:1" disabled>Delete All Report Data</button><button class="ghost" id="scancel">Cancel</button></div></div>':'<button class="danger" id="sbtn" style="width:100%;margin-top:10px">New Season (Delete All Report Data)</button>')+'<button class="ghost" id="del" style="width:100%;margin-top:10px"'+(S.trucks.length<2?' disabled':'')+'>Delete Truck</button></div>':'')+'</div>';
+h+=repHTML();document.getElementById('view').innerHTML=h;
+}
+document.addEventListener('click',function(e){
+var b=e.target.closest('button');if(!b)return;
+if(b.dataset.i!==undefined){S.cur=+b.dataset.i;S.addingField=false;save();render()}
+else if(b.id=='fldadd'){var nv=(document.getElementById('fnew').value||'').trim();if(nv){S.fields=S.fields||[];var ex=S.fields.filter(function(f){return f.toLowerCase()==nv.toLowerCase()})[0];if(ex)nv=ex;else{S.fields.push(nv);S.fields.sort()}T().field=nv}S.addingField=false;save();render()}
+else if(b.id=='fldcancel'){S.addingField=false;render()}
+else if(b.dataset.rf!==undefined){var rf=S.fields.splice(+b.dataset.rf,1)[0];S.trucks.forEach(function(t){if(t.field==rf)t.field=''});save();render()}
+else if(b.id=='add'){S.trucks.push({name:'Truck '+(S.trucks.length+1),net:0,loads:[],notes:'',bl:[],lt:[],hist:[],field:'',crop:''});S.cur=S.trucks.length-1;S.setupOpen=true;save();render();window.scrollTo(0,document.body.scrollHeight)}
+else if(b.id=='addl'){var v=parseFloat(document.getElementById('lb').value.replace(/,/g,''));if(v>0){var tt=T();tt.loads.push(v);(tt.lt=tt.lt||[]).push(Date.now());save();render();document.getElementById('lb').focus()}}
+else if(b.dataset.l!==undefined){T().loads.splice(+b.dataset.l,1);if(T().lt)T().lt.splice(+b.dataset.l,1);save();render()}
+else if(b.id=='setuptog'){seasonAsk=false;fbMsg='';importPending=null;importMsg='';S.setupOpen=!S.setupOpen;save();render()}
+else if(b.id=='reptog'){S.repOpen=!S.repOpen;save();render()}
+else if(b.id=='exp'){doExport()}
+else if(b.id=='clr'){arm('clr',function(){newLoad(T());save();render()})}
+else if(b.id=='fbulkadd'){var bx=document.getElementById('fbulk'),ad=0,sk=0;S.fields=S.fields||[];(bx.value||'').split(/[\r\n\t]+/).forEach(function(n){n=n.trim();if(!n)return;if(S.fields.some(function(f){return f.toLowerCase()==n.toLowerCase()}))sk++;else{S.fields.push(n);ad++}});S.fields.sort();fbMsg=ad||sk?'Added '+ad+(sk?', skipped '+sk+' already in list':''):'Nothing to add';save();render()}
+else if(b.id=='bkp'){doBackup()}
+else if(b.id=='impbtn'){var fi=document.getElementById('impf');fi.value='';fi.click()}
+else if(b.id=='impcancel'){importPending=null;importMsg='';render()}
+else if(b.id=='impgo'){if(importPending){S.trucks=importPending.trucks;S.fields=importPending.fields||[];S.cur=Math.max(0,Math.min(+importPending.cur||0,S.trucks.length-1));fixData();importPending=null;importMsg='Data imported';S.addingField=false;save();render()}}
+else if(b.id=='sbtn'){seasonAsk=true;render();var sd=document.getElementById('sdel');if(sd)sd.focus()}
+else if(b.id=='scancel'){seasonAsk=false;render()}
+else if(b.id=='sgo'){var sv=document.getElementById('sdel');if(sv&&sv.value.trim().toLowerCase()=='delete'){S.trucks.forEach(function(t){t.loads=[];t.lt=[];t.hist=[]});seasonAsk=false;save();render()}}
+else if(b.id=='clrrep'){arm('clrrep',function(){S.trucks.forEach(function(t){newLoad(t)});save();render()})}
+else if(b.id=='del'){if(S.trucks.length>1)arm('del',function(){S.trucks.splice(S.cur,1);S.cur=0;save();render()})}
+});
+document.addEventListener('keydown',function(e){if(e.key=='Enter'&&e.target.id=='lb')document.getElementById('addl').click();if(e.key=='Enter'&&e.target.id=='fnew')document.getElementById('fldadd').click()});
+document.addEventListener('change',function(e){if(e.target.id=='impf'){var f=e.target.files&&e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var o=JSON.parse(rd.result),d=o&&o.data;if(!o||o.app!='graincart'||!d||!Array.isArray(d.trucks)||!d.trucks.length)throw 0;d.trucks.forEach(function(t){if(!Array.isArray(t.loads))throw 0});importPending=d;importMsg=''}catch(x){importPending=null;importMsg='That file is not a Grain Cart backup'}render()};rd.onerror=function(){importMsg='Could not read that file';render()};rd.readAsText(f);return}if(e.target.id=='mode'){S.mode=e.target.value;save();applyTheme();return}if(e.target.id=='thm'){S.theme=e.target.value;save();applyTheme();return}if(e.target.id=='crp'){T().crop=e.target.value;save();return}if(e.target.id!='fld')return;if(e.target.value=='__new'){S.addingField=true;render();var n=document.getElementById('fnew');if(n)n.focus()}else{T().field=e.target.value;save()}});
+document.addEventListener('input',function(e){
+var t=T(),id=e.target.id;
+if(id=='lb'||id=='net'||id=='bn'||e.target.classList.contains('bsz')){var d=e.target.value.replace(/\D/g,'');e.target.value=d?Number(d).toLocaleString('en-US'):''}
+if(id=='sdel'){document.getElementById('sgo').disabled=e.target.value.trim().toLowerCase()!='delete';return}
+if(id=='nt'){t.notes=e.target.value;save()}
+else if(id=='nm'){t.name=e.target.value||'Truck';save();var tabs=document.querySelectorAll('.tab.on');if(tabs[0])tabs[0].textContent=t.name}
+else if(id=='net'){t.net=parseFloat(e.target.value.replace(/,/g,''))||0;save();upd()}
+else if(id=='bn'){var n=Math.min(12,parseInt(e.target.value.replace(/,/g,''))||0);t.bl=t.bl||[];while(t.bl.length<n)t.bl.push(t.bl.length?t.bl[t.bl.length-1]:0);t.bl.length=n;document.getElementById('bsz').innerHTML=binInputs(t);recalc(t)}
+else if(e.target.classList.contains('bsz')){t.bl[+e.target.dataset.b]=parseFloat(e.target.value.replace(/,/g,''))||0;recalc(t)}
+});
+load();render();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+</script>
+</body>
+</html>
